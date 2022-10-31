@@ -2,12 +2,19 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
+import "react-chat-elements/dist/main.css"
 import reportWebVitals from './reportWebVitals';
+// import "@weavy/themes/dist/weavy-default.css";  
+
+import { Provider } from 'react-redux';
+import store from './app/store.js'
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <App />
+    <Provider store={store}>
+      <App />
+    </Provider>,
   </React.StrictMode>
 );
 
