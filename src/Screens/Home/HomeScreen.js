@@ -25,8 +25,6 @@ const HomeScreen = () => {
   const dispatch = useDispatch();
   const token = useSelector(getToken);
 
-
-
   const handleChange = (event) => {
     setValueChange(event.target.value)
     checkUserExists(event.target.value);
@@ -60,7 +58,6 @@ const HomeScreen = () => {
     const tokenClient = token ? token : "wyu_1uiLZgHXlq62LpfBfScnElPhVDBZD818ouEt";
     await FETCH_API_CLIENT(uri,"GET",tokenClient)
     .then((ele) => {
-      // console.log("🚀 ~ file: HomeScreen.js ~ line 63 ~ .then ~ ele",ele)
       if (typeof ele !== "undefined" && ele) {
         navigate("/chat");
       }else{
@@ -73,7 +70,6 @@ const HomeScreen = () => {
     const uri = `${URL}users/${uid}/tokens`;
     await FETCH_API_CLIENT(uri,"POST",TOKEN_ADMIN)
     .then((ele) => {
-      // console.log("🚀 ~ file: HomeScreen.js ~ line 80 ~ .then ~ ele", ele)
       if (ele !== null && ele) {
         dispatch(setToken(ele.access_token));
         navigate("/chat");
@@ -83,7 +79,6 @@ const HomeScreen = () => {
 
   const create_user_token = async (event) => {
     event.preventDefault();
-    // console.log(event.target[0].value)
     const uri = `${URL}users/${event.target[0].value}/tokens`;
     await FETCH_API(uri,"POST")
     .then((ele)=>{
