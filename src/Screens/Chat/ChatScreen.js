@@ -40,6 +40,8 @@ const ChatScreen = () => {
   const [spaceType, setSpaceType] = useState("Chat");
   const [inputChat, setInputChat] = useState("");
 
+  const [members,setMembers] = useState([]);
+
   const { height, width } = UseWindowDimensions();
 
   useEffect(() => {
@@ -82,6 +84,23 @@ const ChatScreen = () => {
       });
     }
   };
+
+  const createdChatRoom = async () => {
+    if (userInfo.uid) {
+      const uri_uid = `${URL}conversations`;
+
+      const data = {
+        members:members
+      }
+      await FETCH_API_CLIENT(uri_uid, "POST", token, data).then((ele) => {
+        if (ele !== null) {
+          setItemSearch(false);
+          createMesage(ele.id);
+        }
+      });
+    }
+  };
+
   const GetMessages = async (appId) => {
     const uri = `${URL}apps/${appId}/messages`;
 
@@ -111,23 +130,31 @@ const ChatScreen = () => {
   const handleKeypress = (e) => {
     if (e.nativeEvent.keyCode === 13) {
       setSendMessge(true);
-      createMesage(appId);
+      if (itemSearch) {
+        createdChatRoom();
+      }else{
+        createMesage(appId);
+      }
     }
   };
 
   const sendMessgeButton = async () => {
     setSendMessge(true);
+    if (itemSearch) {
+      await createdChatRoom();
+    }else{
+      await createMesage(appId);
+    }
     await GetMessages(appId);
-    await createMesage(appId);
   };
 
   const createMesage = async (id) => {
     const uri = `${URL}apps/${id}/messages`;
-
     const data = {
       text: inputChat,
     };
     await FETCH_API_CLIENT(uri, "POST", token, data).then((ele) => {
+      console.log('ele: ', ele);
       if (ele !== null) {
         setInputChat("");
       }
@@ -151,6 +178,8 @@ const ChatScreen = () => {
   };
 
   const onClickItemSearch = async () => {
+    members[0] = data_Search.id;
+    setMembers([...members]);
     setItemSearch(true);
   };
 
@@ -278,12 +307,8 @@ const ChatScreen = () => {
             </Toolbar>
           </Container>
         </AppBar>
-        <Box
-          style={{
-            backgroundColor: "#3eb4bd",
-            height: boxListMesage,
-          }}
-        >
+
+        <Box style={{backgroundColor: "#3eb4bd",height: boxListMesage,}}>
           <MessageList
             className="message-list"
             lockable={true}
@@ -293,16 +318,15 @@ const ChatScreen = () => {
         </Box>
 
         {/* input message */}
-        <Box
-          style={{
-            height:50,
-            backgroundColor: "#333200",
-            display: "flex",
-            flexDirection: "row",
-            position: "relative",
-            bottom: 0,
-          }}
-        >
+        <Box 
+        style={{
+          height:50,
+          backgroundColor: "#333200",
+          display: "flex",
+          flexDirection: "row",
+          position: "relative",
+          bottom: 0,
+        }}>
           <Input
             minHeight="5vh"
             placeholder="Type here..."

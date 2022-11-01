@@ -36,10 +36,8 @@ export const FETCH_API_CLIENT = async (uri,method,tokenClient,paramData = null) 
   };
   await axios(config)
   .then(function (response) {
-    // console.log("🚀 ~ file: common.js ~ line 39 ~ response", response)
     if (response.data !== null ) {
       data = response?.data;
-      // data = response;
     }
   })
   .catch(function (error) {

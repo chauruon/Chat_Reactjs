@@ -103,14 +103,8 @@ const HomeScreen = () => {
         {listUser.length !== 0 ? 
           <>
             <Typography component="h4">Sign In</Typography>
-            <FormControl
-              sx={{
-                // backgroundColor: "#FCB900",
-                maxWidth: 250,
-              }}
-              fullWidth
-            >
-              <InputLabel id="demo-simple-select-label">Name</InputLabel>
+            <FormControl sx={{maxWidth: 250,}} fullWidth>
+              <InputLabel id="demo-simple-select-label">Uid</InputLabel>
               <Select
                 labelId="demo-simple-select-label"
                 id="demo-simple-select"
